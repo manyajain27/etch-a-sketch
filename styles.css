@@ -1,5 +1,6 @@
 *{
     margin:0;
+
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
 body{
@@ -27,6 +28,7 @@ body{
 }
 .maingrid>div:hover{
     cursor: pointer;
+    
 }
 .sidebar{
     display: flex;
@@ -34,5 +36,26 @@ body{
     gap: 30px;
     justify-content: center;
     
+}
+button{
+    background: lightcoral;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border-style: solid;
+    border-radius: 5px;
+    transition: box-shadow 0.15s;
+}
+button:hover{
+    box-shadow: 0 0 10px rgb(110, 50, 128)
+}
+button:active{
+    opacity: 0.8;
+}
+#pick{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
