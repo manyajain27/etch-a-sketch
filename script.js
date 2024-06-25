@@ -1,27 +1,43 @@
-let isDragging = false,isRandom=false,isReset=false;
-let r=0,b=0,g=0,size=0;
+let isDragging = false,isRandom=false,isReset=false,isChosen=false;
+let r=0,b=0,g=0,size=16;
 const grid = document.querySelector(".maingrid");
 const randombutton=document.querySelector("#random");
 const resetbutton=document.querySelector("#reset");
 const sizebutton=document.querySelector("#size");
-
+const pickbutton=document.querySelector("#pick");
+const colorpick=document.querySelector("#favcolor");
+const def=document.querySelector("#default");
 function checkRandom(){
     randombutton.addEventListener("click",()=>{
         isRandom=true;
     })
 }
-
+function chooseColor(){
+    pickbutton.addEventListener("click",()=>{
+        isChosen=true;
+        isRandom=false;
+        isReset=false;
+    })
+}
 randombutton.addEventListener("click", () => {
     isRandom = true;
-    isReset = false; // Reset the reset flag when random button is clicked
+    isReset = false;
+    isChosen=false; // Reset the reset flag when random button is clicked
 });
 
 // Function to handle reset button click
 resetbutton.addEventListener("click", () => {
     isReset = true;
+    isChosen=false;
     isRandom = false; // Reset the random flag when reset button is clicked
     resetGrid();
 });
+
+def.addEventListener("click",()=>{
+    gridSize(16);
+})
+
+
 
 
 function resetGrid() {
@@ -34,27 +50,34 @@ function resetGrid() {
 sizebutton.addEventListener("click", () => {
     isReset = true;
     resetGrid();
-    newsize=0;
-    newsize = parseInt(prompt("Enter grid size (1-100)"));
-        size=newsize;
+    
+    size = parseInt(prompt("Enter grid size (1-100)"));
+        
         gridSize(size);
     
 });
 
 function gridSize(size) {
+    grid.innerHTML = '';
     for (let i = 1; i <= size * size; i++) {
         
         const box = document.createElement("div");
+        box.style.border="1px solid black"
+        box.style.boxSizing="border-box";
         box.style.width = `${640 / size}px`;
         box.style.height = `${640 / size}px`;
         grid.appendChild(box);
         checkRandom();
+        chooseColor();
         
         // Event listeners for drag functionality
         box.addEventListener("mousedown", () => {
             isDragging = true;
             if(isRandom===true){
                 fillRandom(box);
+            }
+            else if(isChosen){
+                fillChosen(box);
             }
             else{
             fillDefault(box);
@@ -65,6 +88,9 @@ function gridSize(size) {
             if (isDragging) {
                 if(isRandom===true){
                     fillRandom(box);
+                }
+                else if(isChosen){
+                    fillChosen(box);
                 }
                 else{
                 fillDefault(box);
@@ -90,5 +116,8 @@ function fillRandom(box){
     b=Math.floor(Math.random()*256);
     box.style.backgroundColor=`rgb(${r},${g},${b})`;
 }
-size=newsize;
+function fillChosen(box) {
+    const chosenColor = colorpick.value;
+    box.style.backgroundColor = chosenColor;
+}
 gridSize(size); 
